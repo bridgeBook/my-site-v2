@@ -12,12 +12,12 @@ function App() {
   const [pokemonDetailsJp, setPokemonDetailsJp] = useState(undefined);
   // ポケAPI2
   const [pokemonDetails, setPokemonDetails] = useState(undefined);
-
+  const [pokemonName, setPokemonName] = useState("");
   const [loading, setLoding] = useState(false);
-
   const [start, setStart] = useState(true);
   //   答え
   const [answerWord, setAnswerWord] = useState("");
+  const [checkingAnswers, setCheckingAnswers] = useState("");
 
   let min = 1;
   let max = 1000;
@@ -35,6 +35,8 @@ function App() {
     async function fetchData1() {
       const data = await fetch(pokemonDataJp);
       const res = await data.json();
+      const jaName = res.names.find((name) => name.language.name === "ja").name;
+      setPokemonName(jaName);
       setPokemonDetailsJp(res);
     }
     async function fetchData2() {
@@ -43,17 +45,9 @@ function App() {
       setPokemonDetails(res);
       setLoding(false);
     }
-    async function fetchData3() {
-      const data = await fetch(pokemonData);
-      const res = await data.json();
-      setPokemonDetails(res);
-      setLoding(false);
-    }
     fetchData1();
     fetchData2();
   };
-
-  //   GET https://pokeapi.co/api/v2/pokemon-species/{id or name}/
 
   const Start = () => {
     if (loading) {
@@ -91,48 +85,59 @@ function App() {
     );
   };
 
-  console.log(pokemonDetails);
-  console.log(pokemonDetailsJp);
+  console.log(pokemonName);
+  console.log(checkingAnswers);
 
-  useEffect(() => {}, {});
+  const Answer = () => {
+    if (answerWord === pokemonName) {
+      setCheckingAnswers(true);
+      return;
+    }
+    setCheckingAnswers(false);
+  };
 
-  console.log(answerWord);
-
-  // 画像
-  // pokemonDetails.sprites.other.official-artwork.front_default
+  //   useEffect(() => {
+  //     if (checkingAnswers === "") return;
+  //   }, [checkingAnswers]);
 
   return (
     <>
       {/* 外枠 */}
       <div className="flex flex-col text-center mt-28">
-        <div className="mx-auto my-auto">
-          <div
-            hidden={pokemonDetails ? true : false}
-            className="font-bold text-2xl mt-40 mb-5"
-          >
-            ポケモンクイズ
+        <div hidden={checkingAnswers === "" ? false : true}>
+          <div className="mx-auto my-auto">
+            <div
+              hidden={pokemonDetails ? true : false}
+              className="font-bold text-2xl mt-40 mb-5"
+            >
+              ポケモンクイズ
+            </div>
+            <Start />
+            <StartButton />
           </div>
-          <Start />
-          <StartButton />
-        </div>
-        <div className="flex">
-          <div className="mx-auto">
-            <Siruetto />
-            <input
-              onChange={(event) => setAnswerWord(event.target.value)}
-              onBlur={(event) => setAnswerWord(event.target.value)}
+          <div className="flex">
+            <div className="mx-auto">
+              <Siruetto />
+              <input
+                onChange={(event) => setAnswerWord(event.target.value)}
+                onBlur={(event) => setAnswerWord(event.target.value)}
+                hidden={pokemonDetails ? false : true}
+                className="shadow appearance-none border rounded w-full mt-6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              />
+            </div>
+          </div>
+          <div>
+            <button
+              onClick={Answer}
               hidden={pokemonDetails ? false : true}
-              className="shadow appearance-none border rounded w-full mt-6 py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            />
+              className="bg-blue-500 hover:bg-blue-400 text-white rounded px-4 py-2 mt-6"
+            >
+              答える
+            </button>
           </div>
         </div>
-        <div>
-          <button
-            hidden={pokemonDetails ? false : true}
-            className="bg-blue-500 hover:bg-blue-400 text-white rounded px-4 py-2 mt-6"
-          >
-            答える
-          </button>
+        <div hidden={checkingAnswers === "" ? true : false}>
+          <div>{checkingAnswers ? "正解" : "ハズレ"}</div>
         </div>
       </div>
     </>
