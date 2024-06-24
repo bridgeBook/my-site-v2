@@ -11,7 +11,7 @@ function App() {
   // ポケAPI1
   const [pokemonDetailsJp, setPokemonDetailsJp] = useState(undefined);
   // ポケAPI2
-  const [pokemonDetails, setPokemonDetails] = useState(undefined);
+  const [pokemonDetails, setPokemonDetails] = useState();
   const [pokemonName, setPokemonName] = useState("");
   const [loading, setLoding] = useState(false);
   const [start, setStart] = useState(true);
