@@ -85,9 +85,6 @@ function App() {
     );
   };
 
-  console.log(pokemonName);
-  console.log(checkingAnswers);
-
   const Answer = () => {
     if (answerWord === pokemonName) {
       setCheckingAnswers(true);
@@ -95,10 +92,6 @@ function App() {
     }
     setCheckingAnswers(false);
   };
-
-  //   useEffect(() => {
-  //     if (checkingAnswers === "") return;
-  //   }, [checkingAnswers]);
 
   return (
     <>
@@ -138,6 +131,7 @@ function App() {
         </div>
         <div hidden={checkingAnswers === "" ? true : false}>
           <div>{checkingAnswers ? "正解" : "ハズレ"}</div>
+          <div>{pokemonName}です</div>
         </div>
       </div>
     </>
