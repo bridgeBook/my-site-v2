@@ -5,7 +5,7 @@ const SilhouetteImage = ({ width, height, imageURL }) => {
 
   useEffect(() => {
     if (!imageURL) {
-      console.error("Image URL is not provided");
+      //   console.error("Image URL is not provided");
       return;
     }
 
