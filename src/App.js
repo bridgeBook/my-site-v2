@@ -70,7 +70,6 @@ function App() {
 
   useEffect(() => {
     if (!pokemonDetails) return;
-    console.log(pokemonDetails);
     setLoding(false);
   }, [pokemonDetails]); // 第2引数には副作用関数の実行タイミングを制御する依存データを記述
 
